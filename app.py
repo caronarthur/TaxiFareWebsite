@@ -54,8 +54,6 @@ data = {"date and time" : pickupdatetime,
        "passenger count": p_count
         }
 
-
-
 url = f'https://taxifare.lewagon.ai/predict?pickup_datetime={pickupdatetime}&pickup_longitude={p_longitude}&pickup_latitude={p_latitude}&dropoff_longitude={d_longitude}&dropoff_latitude={d_latitude}&passenger_count={p_count}'
 
 response = requests.get(url)
@@ -67,10 +65,3 @@ else:
     prediction = round(response.json()['prediction'], 2)
     st.markdown(f'# the prediction of the taxe fare price is {prediction} dollars ! ')
     
-
-
-
-
-
-
-
