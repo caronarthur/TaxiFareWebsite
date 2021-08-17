@@ -3,7 +3,6 @@ import datetime
 import requests
 import pandas as pd
 import pydeck as pdk
-from shapely.geometry import Point, Polygon
 import geopandas as gpd
 import geopy
 
