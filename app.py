@@ -3,6 +3,12 @@ import datetime
 import requests
 import pandas as pd
 import pydeck as pdk
+from shapely.geometry import Point, Polygon
+import geopandas as gpd
+import geopy
+
+from geopy.geocoders import Nominatim
+from geopy.extra.rate_limiter import RateLimiter
 
 from streamlit.state.session_state import Value
 
@@ -23,22 +29,34 @@ pickupdate = st.sidebar.date_input("Insert a pickup date")
 pickuptime = st.sidebar.time_input("insert a pickup time")
 
 '''
-- pickup longitude
+- insert the pickup street, city, province and country
 '''
-p_longitude = st.sidebar.number_input('Insert the pickup longitude', value = -73.9385)
+p_street = st.sidebar.text_input("Street", value = "5th avenue")
+p_city = st.sidebar.text_input("City", value = "New York", key = "city 1")
+p_country = st.sidebar.text_input("Country", value = "Usa", key = "country 1")
+
+p_geolocator = Nominatim(user_agent="GTA Lookup")
+p_geocode = RateLimiter(p_geolocator.geocode, min_delay_seconds=1)
+p_location = p_geolocator.geocode(p_street+", "+p_city+", "+p_country)
+
+p_latitude = p_location.latitude
+p_longitude = p_location.longitude
 
 '''
-- pickup latitude
+- insert the dropoff street, city, province and country
 '''
-p_latitude = st.sidebar.number_input('Insert the pickup latitude', value= 40.6643)
-'''
-- dropoff longitude
-'''
-d_longitude = st.sidebar.number_input('Insert the dropoff longitude', value = -73.9385)
-'''
-- dropoff latitude
-'''
-d_latitude = st.sidebar.number_input('Insert the dropoff latitude', value= 40.6643)
+
+d_street = st.sidebar.text_input("Street", value = "767 5th Ave")
+d_city = st.sidebar.text_input("City", value = "New York", key = "city 2")
+d_country = st.sidebar.text_input("Country", value ="Usa", key = "country 2")
+
+d_geolocator = Nominatim(user_agent="GTA Lookup")
+d_geocode = RateLimiter(d_geolocator.geocode, min_delay_seconds=1)
+d_location = d_geolocator.geocode(d_street+", "+d_city+", "+d_country)
+
+d_latitude = d_location.latitude
+d_longitude = d_location.longitude
+
 '''
 - passenger count
 '''
